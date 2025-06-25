@@ -8,6 +8,11 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi (>=0.115.13,<0.116.0)",
+    "aiosqlite (>=0.21.0,<0.22.0)",
+    "pydantic (>=2.11.7,<3.0.0)",
+    "uvicorn (>=0.34.3,<0.35.0)",
+    "sqlalchemy (>=2.0.41,<3.0.0)"
 ]
 
 [tool.poetry]
