@@ -9,6 +9,7 @@ from ..dao.base import Base
 class User(Base):
     __tablename__ = "users"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     telegram_id: Mapped[int] = mapped_column(Integer, unique=True)
 
     history: Mapped["UserHistory"] = relationship(
@@ -26,12 +27,13 @@ class User(Base):
 class UserHistory(Base):
     __tablename__ = "users_history"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.UTC,
         nullable=False
     )
-    user_id: Mapped[int] = mapped_column(ForeignKey("User.id"), server_default=text("1"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), server_default=text("1"))
     request_history: Mapped[List[str]] = mapped_column(PickleType)
     order_history: Mapped[List[str]] = mapped_column(PickleType)
 
@@ -45,6 +47,7 @@ class UserHistory(Base):
 class PromoAction(Base):
     __tablename__ = "promo_action"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String)
     percent: Mapped[int] = mapped_column(Integer)
     fix_price: Mapped[int] = mapped_column(Integer)
@@ -68,6 +71,7 @@ class PromoAction(Base):
 class MainRoom(Base):
     __tablename__ = "main_rooms"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     room: Mapped[str] = mapped_column(String)
 
     products: Mapped["Product"] = relationship(
@@ -77,17 +81,10 @@ class MainRoom(Base):
     )
 
 
-class MenuItem(Base):
-    __tablename__ = "menu_items"
-
-    title: Mapped[str] = mapped_column(String)
-    word: Mapped[str] = mapped_column(String)
-    imageURL: Mapped[str] = mapped_column(String)
-
-
 class Product(Base):
     __tablename__ = "products_list"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     imageURL: Mapped[str] = mapped_column(String)
@@ -95,8 +92,8 @@ class Product(Base):
     availability: Mapped[int] = mapped_column(Integer)
     allImagesURL: Mapped[List[str]] = mapped_column(PickleType)
     color: Mapped[str] = mapped_column(String)
-    room_id: Mapped[int] = mapped_column(ForeignKey("MainRoom.id"))
-    item_type_id: Mapped[int] = mapped_column(ForeignKey("ProductType.id"))
+    room_id: Mapped[int] = mapped_column(ForeignKey("main_rooms.id"))
+    product_type_id: Mapped[int] = mapped_column(ForeignKey("products_types.id"))
 
     orders: Mapped["Order"] = relationship(
         "Order",
@@ -118,6 +115,7 @@ class Product(Base):
 class Order(Base):
     __tablename__ = "orders"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     order_date: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.UTC,
@@ -165,6 +163,7 @@ class Order(Base):
 class DeliveryStatus(Base):
     __tablename__ = "delivery_status"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     status: Mapped[str] = mapped_column(String)
 
     orders: Mapped["Order"] = relationship(
@@ -177,6 +176,7 @@ class DeliveryStatus(Base):
 class DeliveryType(Base):
     __tablename__ = "delivery_types"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     type: Mapped[str] = mapped_column(String)
 
     orders: Mapped["Order"] = relationship(
@@ -189,7 +189,10 @@ class DeliveryType(Base):
 class ProductType(Base):
     __tablename__ = "products_types"
 
-    type: Mapped[str] = mapped_column(String)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    title: Mapped[str] = mapped_column(String)
+    word: Mapped[str] = mapped_column(String)
+    imageURL: Mapped[str] = mapped_column(String)
 
     products: Mapped["Product"] = relationship(
         "Product",

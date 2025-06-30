@@ -16,8 +16,6 @@ T = TypeVar("T", bound=Base)
 class BaseDAO(Generic[T]):
     model: type[T]
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-
     @classmethod
     async def find_one_or_none_by_id(cls, data_id: int, session: AsyncSession):
         # Найти запись по ID
