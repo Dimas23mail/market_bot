@@ -12,7 +12,7 @@ class Product(Base):
     title: Mapped[str]
     price: Mapped[int]
     imageURL: Mapped[str]
-    description: Mapped[str] = mapped_column(Text)
+    description: Mapped[str] = mapped_column(Text, default="", server_default="")
     availability: Mapped[int]
     allImagesURL: Mapped[List[str]] = mapped_column(PickleType)
     color: Mapped[str]
