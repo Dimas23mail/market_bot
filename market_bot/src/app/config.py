@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     FRONT_SITE: str
     TG_BOT_SITE: str
     API_PORT: str
+    DB_ECHO: bool = True
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"),
